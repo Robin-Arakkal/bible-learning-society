@@ -10,6 +10,8 @@
     "strict": true,
     "target": "es2017",
     "types": [
+      "react",
+      "react-dom",
       "node",
       "jest"
     ],

@@ -79,7 +79,7 @@ export const getSubmissions = functions.https.onRequest(async (req: functions.ht
       .orderBy('timestamp', 'desc')
       .get();
 
-    const submissions = snapshot.docs.map(doc => ({
+    const submissions = snapshot.docs.map((doc: admin.firestore.QueryDocumentSnapshot) => ({
       id: doc.id,
       ...doc.data()
     }));

@@ -8,7 +8,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "types": ["node", "jest"],
+    "lib": ["es2017", "es2015", "esnext.asynciterable"]
   },
   "compileOnSave": true,
   "include": [

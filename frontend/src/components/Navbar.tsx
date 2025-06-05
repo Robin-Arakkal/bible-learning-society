@@ -10,8 +10,6 @@ import {
   Container,
   Button,
   MenuItem,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -23,8 +21,6 @@ const pages = [
 
 export const Navbar: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);

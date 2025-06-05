@@ -8,6 +8,13 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+frontend/node_modules
+frontend/dist
+frontend/build
+frontend/public
+frontend/src
+frontend/package-lock.json
+frontend/package.json
 dist
 dist-ssr
 *.local

@@ -1,13 +1,14 @@
-import * as functions from 'firebase-functions-test';
-import * as admin from 'firebase-admin';
+import functionsTest from 'firebase-functions-test';
 import { Request, Response } from 'express';
 
-const testEnv = functions();
+const testEnv = functionsTest({
+  projectId: 'test-project',
+  databaseURL: 'https://test-project.firebaseio.com'
+});
 
 describe('Contact Form Endpoint', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let data: any;
 
   beforeEach(() => {
     req = {
@@ -22,7 +23,6 @@ describe('Contact Form Endpoint', () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    data = {};
   });
 
   afterEach(() => {

@@ -9,68 +9,84 @@
 
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as express from 'express';
-import * as cors from 'cors';
+import express from 'express';
+import cors from 'cors';
 
 admin.initializeApp();
 
 const app = express();
 app.use(cors({ origin: true }));
-app.use(express.json());
 
-// Email validation regex
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// In-memory storage for contact submissions
-const contactSubmissions: Array<{
+interface ContactSubmission {
   name: string;
   email: string;
   message: string;
-  timestamp: number;
-}> = [];
+  timestamp: admin.firestore.Timestamp;
+}
+
+const db = admin.firestore();
+
+// Validate email format
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
 export const contact = functions.https.onRequest(async (req, res) => {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
   }
 
   const { name, email, message } = req.body;
 
   // Validate required fields
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    res.status(400).json({ error: 'Missing required fields' });
+    return;
   }
 
   // Validate email format
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
+  if (!isValidEmail(email)) {
+    res.status(400).json({ error: 'Invalid email format' });
+    return;
   }
 
   try {
-    // Store the submission
-    contactSubmissions.push({
+    const submission: ContactSubmission = {
       name,
       email,
       message,
-      timestamp: Date.now(),
-    });
+      timestamp: admin.firestore.Timestamp.now(),
+    };
 
-    // Log the submission
-    console.log('New contact submission:', { name, email, message });
-
-    return res.status(201).json({ message: 'Submission received' });
+    await db.collection('submissions').add(submission);
+    res.status(201).json({ message: 'Submission received' });
   } catch (error) {
-    console.error('Error processing submission:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('Error saving submission:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Optional: Add an endpoint to retrieve submissions (for admin purposes)
 export const getSubmissions = functions.https.onRequest(async (req, res) => {
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
   }
 
-  // In a real application, you would add authentication here
-  return res.status(200).json({ submissions: contactSubmissions });
+  try {
+    const snapshot = await db.collection('submissions')
+      .orderBy('timestamp', 'desc')
+      .get();
+
+    const submissions = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    res.status(200).json(submissions);
+  } catch (error) {
+    console.error('Error fetching submissions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });

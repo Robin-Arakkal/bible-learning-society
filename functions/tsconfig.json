@@ -10,10 +10,14 @@
     "strict": true,
     "target": "es2017",
     "types": [
-      "react",
-      "react-dom",
-      "node", "jest"],
-    "lib": ["es2017", "es2015", "esnext.asynciterable"]
+      "node",
+      "jest"
+    ],
+    "lib": [
+      "es2017",
+      "es2015",
+      "esnext.asynciterable"
+    ]
   },
   "compileOnSave": true,
   "include": [

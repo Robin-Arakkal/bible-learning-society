@@ -13,7 +13,11 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const pages = [
+interface Page {
+  name: string;
+  path: string;
+}
+const pages: Page[] = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
   { name: 'Contact', path: '/contact' },

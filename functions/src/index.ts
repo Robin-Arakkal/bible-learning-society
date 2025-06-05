@@ -32,7 +32,7 @@ const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
-export const contact = functions.https.onRequest(async (req, res) => {
+export const contact = functions.https.onRequest(async (req: functions.https.Request, res: functions.Response) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
@@ -68,7 +68,7 @@ export const contact = functions.https.onRequest(async (req, res) => {
   }
 });
 
-export const getSubmissions = functions.https.onRequest(async (req, res) => {
+export const getSubmissions = functions.https.onRequest(async (req: functions.https.Request, res: functions.Response) => {
   if (req.method !== 'GET') {
     res.status(405).json({ error: 'Method not allowed' });
     return;

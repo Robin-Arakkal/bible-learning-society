@@ -5,7 +5,12 @@ import SchoolIcon from '@mui/icons-material/School';
 import GroupsIcon from '@mui/icons-material/Groups';
 
 export const Home: React.FC = () => {
-  const features = [
+  interface Feature {
+    icon: JSX.Element;
+    title: string;
+    description: string;
+  }
+  const features: Feature[] = [
     {
       icon: <AutoStoriesIcon sx={{ fontSize: 40, color: 'primary.main' }} />,
       title: 'Bible Study',

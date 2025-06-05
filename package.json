@@ -14,6 +14,7 @@
     "deploy:functions": "firebase deploy --only functions"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "concurrently": "^8.2.2"
   }
-} 
+}

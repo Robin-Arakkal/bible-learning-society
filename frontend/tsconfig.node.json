@@ -6,6 +6,8 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "types": [
+      "react",
+      "react-dom",
       "node",
       "jest"
     ]
